@@ -90,69 +90,105 @@ export default function MesasPage() {
 
 function SalonMap() {
   return (
-    <div className="card mt-10 p-5 sm:p-8">
-      <div className="relative mt-2 w-full aspect-[16/9] rounded-xl salon-floor border border-border overflow-hidden">
+    <div className="card mt-10 p-3 sm:p-5">
+      <div className="relative w-full aspect-[2/1] rounded-xl salon-floor border border-border overflow-hidden">
+        {/* DJ */}
         <div
-          className="absolute top-[6%] left-1/2 -translate-x-1/2 px-6 py-2 rounded-lg bg-foreground/85 text-background text-xs tracking-widest uppercase"
+          className="absolute top-[1%] left-1/2 -translate-x-1/2 w-[12%] h-[8%] rounded-md bg-white border border-foreground/70 flex items-center justify-center text-sm tracking-[0.3em] uppercase text-foreground font-medium"
           aria-hidden
         >
           DJ
         </div>
 
+        {/* Pista */}
         <div
-          className="absolute left-1/2 -translate-x-1/2 top-[42%] -translate-y-1/2 w-[26%] h-[32%] rounded-full border-2 border-dashed border-accent-dark/60 flex items-center justify-center text-[0.65rem] uppercase tracking-[0.3em] text-accent-dark"
+          className="absolute left-1/2 -translate-x-1/2 top-[42%] -translate-y-1/2 w-[20%] h-[52%] rounded-md bg-white border-2 border-foreground/50 flex items-center justify-center font-serif text-sm sm:text-base tracking-[0.2em] uppercase text-foreground/80 shadow-inner"
           aria-hidden
         >
           Pista de baile
         </div>
 
+        {/* Mesas */}
         {tables.map((t) => {
+          if (t.shape === "sweetheart") return null;
           const totals = tableTotals(t.id);
-          const label =
-            t.shape === "sweetheart"
-              ? "R & A"
-              : t.id;
+          const size = tableSize(t.shape, t.capacity);
+          const isVertical = t.shape === "rect-v";
           return (
             <div
               key={t.id}
-              className="absolute -translate-x-1/2 -translate-y-1/2 flex flex-col items-center"
-              style={{ left: `${t.position.x}%`, top: `${t.position.y}%` }}
+              className={`absolute -translate-x-1/2 -translate-y-1/2 flex items-center justify-center text-white shadow-md bg-primary border border-primary/70 ${
+                t.shape === "round" ? "rounded-full" : "rounded-md"
+              }`}
+              style={{
+                left: `${t.position.x}%`,
+                top: `${t.position.y}%`,
+                width: size.w,
+                height: size.h,
+              }}
+              title={`${t.label} · ${totals.personas}/${t.capacity} personas`}
             >
               <div
-                className={`table-dot ${t.shape} flex items-center justify-center font-serif text-center shadow-md ${
-                  t.shape === "sweetheart"
-                    ? "px-3 py-2 text-xs"
-                    : t.shape === "round"
-                      ? "w-14 h-14 text-xl"
-                      : "w-20 h-10 text-base"
-                }`}
-                title={`${t.label} · ${t.description}`}
+                className={`leading-tight text-center ${isVertical ? "-rotate-90 whitespace-nowrap" : ""}`}
               >
-                {label}
+                <p className="font-semibold text-[0.7rem] sm:text-[0.78rem] tracking-widest uppercase">
+                  Mesa {t.id}
+                </p>
+                <p className="font-serif text-[0.72rem] sm:text-[0.8rem] mt-0.5 opacity-95">
+                  {t.capacity} PAX
+                </p>
               </div>
-              {t.shape !== "sweetheart" && (
-                <span className="mt-1 text-[0.6rem] uppercase tracking-wider text-foreground/70 text-center max-w-[6rem] leading-tight">
-                  {totals.personas}/{t.capacity}
-                </span>
-              )}
             </div>
           );
         })}
+
+        {/* Mesa de novios */}
+        <div
+          className="absolute left-1/2 -translate-x-1/2 -translate-y-1/2"
+          style={{ top: "91%" }}
+        >
+          <div className="px-6 py-2.5 rounded-md bg-accent-dark text-white border border-accent-dark shadow-md text-center">
+            <p className="font-serif text-xs sm:text-sm tracking-[0.25em] uppercase">
+              Roxana &amp; Andrés
+            </p>
+          </div>
+        </div>
+
       </div>
-      <div className="mt-4 flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-[0.65rem] uppercase tracking-widest text-foreground/60">
+
+      <div className="mt-5 flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-[0.65rem] uppercase tracking-widest text-foreground/60">
         <span className="flex items-center gap-2">
-          <span className="inline-block w-4 h-4 rounded-full table-dot" />
+          <span className="inline-block w-4 h-4 rounded-full bg-primary" />
           Mesa redonda
         </span>
         <span className="flex items-center gap-2">
-          <span className="inline-block w-6 h-3 rounded-md table-dot rect" />
+          <span className="inline-block w-6 h-3 rounded-sm bg-primary" />
           Mesa rectangular
         </span>
         <span className="flex items-center gap-2">
-          <span className="inline-block w-6 h-3 rounded-md table-dot sweetheart" />
+          <span className="inline-block w-6 h-3 rounded-sm bg-accent-dark" />
           Mesa de novios
         </span>
       </div>
     </div>
   );
+}
+
+function tableSize(
+  shape: "round" | "rect-v" | "rect-h" | "sweetheart",
+  capacity: number,
+): { w: string; h: string } {
+  if (shape === "round") {
+    const w = capacity >= 12 ? 10 : 9;
+    return { w: `${w}%`, h: `${w * 2}%` };
+  }
+  if (shape === "rect-v") {
+    const h = capacity >= 12 ? 28 : 24;
+    return { w: "7%", h: `${h}%` };
+  }
+  if (shape === "rect-h") {
+    const w = capacity >= 12 ? 14 : 12;
+    return { w: `${w}%`, h: "11%" };
+  }
+  return { w: "14%", h: "9%" };
 }

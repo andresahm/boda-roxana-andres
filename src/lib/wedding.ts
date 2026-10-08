@@ -11,7 +11,13 @@ export type Table = {
   label: string;
   description: string;
   capacity: number;
-  shape: "round" | "rect" | "sweetheart";
+  /**
+   * - round: mesa redonda
+   * - rect-v: rectangular con el lado largo vertical
+   * - rect-h: rectangular con el lado largo horizontal
+   * - sweetheart: mesa de los novios
+   */
+  shape: "round" | "rect-v" | "rect-h" | "sweetheart";
   area: "izquierda" | "derecha" | "centro";
   position: { x: number; y: number };
 };
@@ -49,25 +55,25 @@ export const wedding = {
 };
 
 export const tables: Table[] = [
-  { id: 7,  label: "Mesa 7",  description: "Amigos del novio",       capacity: 10, shape: "round", area: "izquierda", position: { x: 8,  y: 14 } },
-  { id: 5,  label: "Mesa 5",  description: "Familia de la novia",    capacity: 12, shape: "rect",  area: "izquierda", position: { x: 23, y: 14 } },
-  { id: 3,  label: "Mesa 3",  description: "Amigos de la novia",     capacity: 10, shape: "rect",  area: "izquierda", position: { x: 38, y: 14 } },
-  { id: 10, label: "Mesa 10", description: "Amigos del novio",       capacity: 10, shape: "rect",  area: "derecha",   position: { x: 62, y: 14 } },
-  { id: 12, label: "Mesa 12", description: "Compañeros del novio",   capacity: 12, shape: "rect",  area: "derecha",   position: { x: 77, y: 14 } },
-  { id: 14, label: "Mesa 14", description: "Amigos del novio",       capacity: 10, shape: "round", area: "derecha",   position: { x: 92, y: 14 } },
+  { id: 7,  label: "Mesa 7",  description: "Amigos del novio",       capacity: 10, shape: "round",  area: "izquierda", position: { x: 6,  y: 18 } },
+  { id: 5,  label: "Mesa 5",  description: "Familia de la novia",    capacity: 12, shape: "rect-v", area: "izquierda", position: { x: 20, y: 20 } },
+  { id: 3,  label: "Mesa 3",  description: "Amigos de la novia",     capacity: 10, shape: "rect-v", area: "izquierda", position: { x: 32, y: 20 } },
+  { id: 10, label: "Mesa 10", description: "Amigos del novio",       capacity: 10, shape: "rect-v", area: "derecha",   position: { x: 68, y: 20 } },
+  { id: 12, label: "Mesa 12", description: "Compañeros del novio",   capacity: 12, shape: "rect-v", area: "derecha",   position: { x: 80, y: 20 } },
+  { id: 14, label: "Mesa 14", description: "Amigos del novio",       capacity: 10, shape: "round",  area: "derecha",   position: { x: 94, y: 18 } },
 
-  { id: 6,  label: "Mesa 6",  description: "Familia de la novia",    capacity: 10, shape: "rect",  area: "izquierda", position: { x: 8,  y: 42 } },
-  { id: 4,  label: "Mesa 4",  description: "Familia de la novia",    capacity: 12, shape: "rect",  area: "izquierda", position: { x: 23, y: 42 } },
-  { id: 2,  label: "Mesa 2",  description: "Amigos de la novia",     capacity: 12, shape: "rect",  area: "izquierda", position: { x: 38, y: 42 } },
-  { id: 9,  label: "Mesa 9",  description: "Amigos del novio",       capacity: 12, shape: "rect",  area: "derecha",   position: { x: 62, y: 42 } },
-  { id: 11, label: "Mesa 11", description: "Familia del novio",      capacity: 12, shape: "rect",  area: "derecha",   position: { x: 77, y: 42 } },
-  { id: 15, label: "Mesa 15", description: "Amigos del novio",       capacity: 10, shape: "rect",  area: "derecha",   position: { x: 92, y: 42 } },
+  { id: 6,  label: "Mesa 6",  description: "Familia de la novia",    capacity: 10, shape: "rect-v", area: "izquierda", position: { x: 6,  y: 50 } },
+  { id: 4,  label: "Mesa 4",  description: "Familia de la novia",    capacity: 12, shape: "rect-v", area: "izquierda", position: { x: 20, y: 52 } },
+  { id: 2,  label: "Mesa 2",  description: "Amigos de la novia",     capacity: 12, shape: "rect-h", area: "izquierda", position: { x: 34, y: 44 } },
+  { id: 9,  label: "Mesa 9",  description: "Amigos del novio",       capacity: 12, shape: "rect-h", area: "derecha",   position: { x: 66, y: 44 } },
+  { id: 11, label: "Mesa 11", description: "Familia del novio",      capacity: 12, shape: "rect-v", area: "derecha",   position: { x: 80, y: 52 } },
+  { id: 15, label: "Mesa 15", description: "Amigos del novio",       capacity: 10, shape: "rect-v", area: "derecha",   position: { x: 94, y: 50 } },
 
-  { id: 16, label: "Mesa 16", description: "Amigos del novio",       capacity: 10, shape: "rect",  area: "izquierda", position: { x: 10, y: 78 } },
-  { id: 1,  label: "Mesa 1",  description: "Familia de la novia",    capacity: 10, shape: "round", area: "izquierda", position: { x: 28, y: 80 } },
-  { id: 0,  label: "Mesa de novios", description: "Roxana & Andrés", capacity: 2,  shape: "sweetheart", area: "centro", position: { x: 50, y: 82 } },
-  { id: 8,  label: "Mesa 8",  description: "Familia del novio",      capacity: 10, shape: "round", area: "derecha",   position: { x: 72, y: 80 } },
-  { id: 13, label: "Mesa 13", description: "Familia del novio",      capacity: 12, shape: "rect",  area: "derecha",   position: { x: 92, y: 78 } },
+  { id: 16, label: "Mesa 16", description: "Amigos del novio",       capacity: 10, shape: "rect-v", area: "izquierda", position: { x: 6,  y: 82 } },
+  { id: 1,  label: "Mesa 1",  description: "Familia de la novia",    capacity: 10, shape: "round",  area: "izquierda", position: { x: 25, y: 84 } },
+  { id: 0,  label: "Mesa de novios", description: "Roxana & Andrés", capacity: 2,  shape: "sweetheart", area: "centro", position: { x: 50, y: 90 } },
+  { id: 8,  label: "Mesa 8",  description: "Familia del novio",      capacity: 10, shape: "round",  area: "derecha",   position: { x: 75, y: 84 } },
+  { id: 13, label: "Mesa 13", description: "Familia del novio",      capacity: 12, shape: "rect-v", area: "derecha",   position: { x: 94, y: 82 } },
 ];
 
 export const parties: Party[] = [
