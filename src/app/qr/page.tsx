@@ -7,6 +7,8 @@ import {
 } from "@/components/WeddingHeader";
 import { wedding } from "@/lib/wedding";
 
+export const instant = false;
+
 export default async function QrPage() {
   const h = await headers();
   const host = h.get("x-forwarded-host") ?? h.get("host") ?? "localhost:4123";
