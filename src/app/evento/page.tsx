@@ -46,7 +46,7 @@ export default function EventoPage() {
 
           <div className="card mt-6 p-8">
             <h2 className="font-serif text-2xl flex items-center gap-3">
-              Itinerario
+              Itinerario principal
               <OrnamentFlourish />
             </h2>
             <ul className="mt-5 divide-y divide-border/60">
@@ -57,6 +57,38 @@ export default function EventoPage() {
                 >
                   <span className="font-serif text-xl">{item.label}</span>
                   <span className="chip chip-accent">{item.time} h</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          <div className="card mt-6 p-8">
+            <h2 className="font-serif text-2xl flex items-center gap-3">
+              Programa del día
+              <OrnamentFlourish />
+            </h2>
+            <p className="text-sm text-foreground/60 mt-1 italic">
+              Así se vive la boda, hora por hora.
+            </p>
+            <ul className="mt-5 divide-y divide-border/60">
+              {wedding.program.map((item, idx) => (
+                <li
+                  key={`${item.from}-${idx}`}
+                  className="flex items-start gap-4 py-4"
+                >
+                  <span className="shrink-0 w-24 pt-1 text-sm font-mono text-primary tracking-wider">
+                    {item.to ? `${item.from}–${item.to}` : `${item.from}`}
+                  </span>
+                  <span className="flex-1">
+                    <span className="font-serif text-lg block leading-tight">
+                      {item.title}
+                    </span>
+                    {item.note && (
+                      <span className="text-xs text-foreground/60 italic">
+                        {item.note}
+                      </span>
+                    )}
+                  </span>
                 </li>
               ))}
             </ul>

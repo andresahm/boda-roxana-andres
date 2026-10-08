@@ -33,6 +33,11 @@ export default function MenuPage() {
               <div key={section.course} className={i > 0 ? "mt-10" : ""}>
                 <div className="text-center">
                   <p className="chip chip-accent">{section.course}</p>
+                  {section.subtitle && (
+                    <p className="mt-2 text-[0.7rem] tracking-[0.25em] uppercase text-foreground/60">
+                      {section.subtitle}
+                    </p>
+                  )}
                 </div>
                 <ul className="mt-5 space-y-5">
                   {section.dishes.map((dish) => (

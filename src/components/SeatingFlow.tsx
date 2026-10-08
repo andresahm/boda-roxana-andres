@@ -276,9 +276,9 @@ function Result({ party, onReset }: { party: Party; onReset: () => void }) {
             <OrnamentFlourish />
           </h3>
           <p className="mt-3 text-foreground/70">
-            Esta noche disfrutaremos de un cóctel de bienvenida, entrada, sopa,
-            plato principal, postre y mesa de dulces. Todo acompañado de barra
-            libre durante la recepción.
+            Cóctel de bienvenida con mezcal y nieve artesanal, dos opciones de
+            entrada, crema, plato principal y postre a elegir. Al cierre, hay
+            tornaboda con chilaquiles y tortas de cochinita.
           </p>
           <Link href="/menu" className="btn-ghost mt-5 inline-flex">
             Ver menú completo →

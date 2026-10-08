@@ -27,9 +27,22 @@ export const wedding = {
   mapsUrl:
     "https://www.google.com/maps/search/?api=1&query=Jardin+Margaty+Jiutepec+87+Las+Rosas+62560+Jiutepec+Morelos",
   schedule: [
-    { time: "15:45", label: "Ceremonia" },
+    { time: "16:00", label: "Ceremonia" },
     { time: "17:00", label: "Cóctel" },
     { time: "18:00", label: "Recepción" },
+  ],
+  program: [
+    { from: "15:30", to: "16:00", title: "Recepción de invitados" },
+    { from: "16:00", to: "17:00", title: "Ceremonia religiosa", note: "Vázquez Music" },
+    { from: "17:00", to: "18:00", title: "Cóctel y sesión de fotos", note: "Music Beat" },
+    { from: "18:00", to: "18:15", title: "Entrada de invitados y novios", note: "Cakes de humo y chisperos" },
+    { from: "18:15", to: "19:15", title: "Banquete", note: "Capitanes de mesa" },
+    { from: "19:15", to: "19:45", title: "Brindis y novios mariposa", note: "Novio–Mamá / Novia–Mamá" },
+    { from: "19:45", to: "22:00", title: "Pista abierta", note: "Music Beat" },
+    { from: "23:00", to: "", title: "Pirotecnia · ramo y liga" },
+    { from: "23:30", to: "01:00", title: "Batucada y fiesta", note: "Bad Bunny · Luis Miguel · fiesta" },
+    { from: "01:00", to: "02:00", title: "Shots y esquites" },
+    { from: "02:00", to: "03:00", title: "Tornafiesta — fin del evento" },
   ],
   dressCode: "Formal",
   invitationUrl: "https://sugarme.mx/RoxanayAndres_10oct26/",
@@ -169,85 +182,108 @@ export const parties: Party[] = [
 
 export type MenuSection = {
   course: string;
+  subtitle?: string;
   dishes: { name: string; description?: string }[];
 };
 
 export const menu: MenuSection[] = [
   {
-    course: "Cóctel de bienvenida · 17:00 h",
+    course: "Cóctel de bienvenida",
+    subtitle: "17:00 h · Barra abierta",
     dishes: [
       {
         name: "Barra de bebidas",
-        description: "Mezcal, vino espumoso, cerveza artesanal y bebidas sin alcohol.",
+        description:
+          "Mojitos, clamatos, mezcal, gin, Aperol y nieve artesanal.",
       },
       {
-        name: "Canapés fríos y calientes",
+        name: "Aguas frescas",
+        description: "Jamaica, horchata y limón.",
+      },
+      {
+        name: "Entremeses",
         description:
-          "Bruschetta de tomate confitado, brocheta caprese, mini quesadillas de huitlacoche y rollitos de salmón.",
+          "Sopecitos de tinga de res con queso y crema · Quesadillas de tinga de pollo · Pan tomate con jamón serrano.",
       },
     ],
   },
   {
     course: "Entrada",
+    subtitle: "A elegir",
     dishes: [
       {
-        name: "Ensalada de la casa",
+        name: "Fideo seco con costilla de cerdo",
         description:
-          "Mezcla de hojas verdes, pera asada, nuez caramelizada y queso de cabra con vinagreta de miel de agave.",
+          "Salsa de chipotle, crema de rancho, queso sincho y aguacate.",
+      },
+      {
+        name: "Aguachile de pescado",
+        description: "Marañón y tostones de plátano con tortilla azul.",
       },
     ],
   },
   {
-    course: "Sopa",
+    course: "Crema",
+    subtitle: "A elegir",
     dishes: [
       {
-        name: "Crema de flor de calabaza",
-        description: "Con un toque de epazote y crujiente de maíz azul.",
+        name: "Jugo de carne con mezcal",
+        description: "Jardinera y limón real.",
+      },
+      {
+        name: "Crema de calabaza de Castilla",
+        description: "Azafrán, pepita verde y aceite de tres chiles.",
       },
     ],
   },
   {
     course: "Plato principal",
+    subtitle: "A elegir",
     dishes: [
       {
-        name: "Filete de res al vino tinto",
+        name: "Suprema de pollo agridulce",
         description:
-          "Medallón de res con reducción de vino tinto, puré rústico de papa y vegetales de temporada.",
+          "Puré de papa, julianas de verdura a la mantequilla y perejil frito.",
       },
       {
-        name: "Opción alternativa · pollo",
-        description: "Pechuga rellena de queso manchego en salsa de hierbas finas.",
-      },
-      {
-        name: "Opción vegetariana",
+        name: "Ternera en su jugo",
         description:
-          "Risotto cremoso de hongos silvestres con parmesano. Avísale a un capitán al llegar.",
+          "Milhojas de pastel de papa con queso Gouda y camote frito.",
       },
     ],
   },
   {
     course: "Postre",
+    subtitle: "A elegir",
     dishes: [
       {
-        name: "Pastel de boda",
-        description: "Tres leches con crema de vainilla y frutos del bosque.",
+        name: "Milhojas de crema de limón y lima",
+        description: "Sorbete de frutos del bosque.",
       },
       {
-        name: "Mesa de dulces",
-        description: "Selección de dulces tradicionales mexicanos para toda la noche.",
+        name: "Fresas con nata montada",
+        description:
+          "Melaza de vino tinto y helado de queso.",
       },
     ],
   },
   {
-    course: "Barra libre y café",
+    course: "Menú para niños",
     dishes: [
       {
-        name: "Barra libre",
-        description: "Cocteles de autor, cerveza, vino y destilados premium.",
+        name: "Nuggets con espagueti y papas",
+      },
+    ],
+  },
+  {
+    course: "Tornaboda",
+    subtitle: "Para seguir la fiesta",
+    dishes: [
+      {
+        name: "Chilaquiles",
       },
       {
-        name: "Café de olla y digestivos",
-        description: "Café, tés e infusiones para cerrar la noche.",
+        name: "Tortas de cochinita pibil",
       },
     ],
   },
