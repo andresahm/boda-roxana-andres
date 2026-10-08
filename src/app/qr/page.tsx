@@ -1,6 +1,10 @@
 import QRCode from "qrcode";
 import { headers } from "next/headers";
-import { OrnamentFlourish, WeddingFooter, WeddingHeader } from "@/components/WeddingHeader";
+import {
+  OrnamentFlourish,
+  WeddingFooter,
+  WeddingHeader,
+} from "@/components/WeddingHeader";
 import { wedding } from "@/lib/wedding";
 
 export default async function QrPage() {
@@ -12,9 +16,9 @@ export default async function QrPage() {
   const dataUrl = await QRCode.toDataURL(url, {
     errorCorrectionLevel: "H",
     margin: 1,
-    width: 480,
+    width: 540,
     color: {
-      dark: "#2a1f1a",
+      dark: "#393e46",
       light: "#ffffff",
     },
   });
@@ -32,17 +36,17 @@ export default async function QrPage() {
             <OrnamentFlourish />
           </div>
           <p className="text-foreground/70 mt-4 max-w-md mx-auto">
-            Imprime este código y colócalo a la entrada o en cada invitación.
-            Al escanearlo, los invitados verán esta página y podrán buscar su
-            mesa.
+            Imprime este código y colócalo a la entrada del salón. Al
+            escanearlo, cada invitado verá la página para buscar su mesa.
           </p>
 
           <div className="card mt-10 p-10 inline-flex flex-col items-center">
-            <p className="font-serif text-2xl text-primary">
-              {wedding.bride} <span className="text-accent">&</span>{" "}
+            <p className="font-serif text-3xl text-primary">
+              {wedding.bride}{" "}
+              <span className="text-accent-dark italic">&amp;</span>{" "}
               {wedding.groom}
             </p>
-            <p className="text-xs tracking-widest uppercase text-foreground/60 mt-1">
+            <p className="text-[0.65rem] tracking-[0.3em] uppercase text-foreground/60 mt-1">
               {wedding.dateShort} · {wedding.venue}
             </p>
             {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -51,14 +55,14 @@ export default async function QrPage() {
               alt="Código QR"
               className="mt-6 w-64 h-64 sm:w-72 sm:h-72"
             />
-            <p className="mt-4 text-sm text-foreground/70 break-all">
+            <p className="mt-4 text-xs text-foreground/70 break-all max-w-xs">
               {url}
             </p>
           </div>
 
           <p className="text-xs text-foreground/50 mt-6">
-            Consejo: imprime este QR en una tarjeta rígida y colócalo en la mesa
-            de bienvenida.
+            Consejo: pide un acrílico o cartel estilo mesa de bienvenida con
+            este código impreso en grande.
           </p>
         </section>
       </main>

@@ -15,9 +15,9 @@ const cormorant = Cormorant_Garamond({
 });
 
 export const metadata: Metadata = {
-  title: "Sofía & Mateo · Boda",
+  title: "Roxana & Andrés · 10 de octubre de 2026",
   description:
-    "Encuentra tu mesa, descubre el menú y disfruta nuestra boda. Sofía & Mateo, 25 de octubre de 2025.",
+    "Encuentra tu mesa, revisa el menú y la distribución del salón para la boda de Roxana & Andrés en Jardín Margaty.",
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {

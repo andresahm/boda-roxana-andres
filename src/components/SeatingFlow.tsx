@@ -3,12 +3,11 @@
 import { useMemo, useState } from "react";
 import Link from "next/link";
 import {
-  type Guest,
-  findExactGuest,
-  getGuestsAtTable,
+  type Party,
+  findExactParty,
+  getPartiesAtTable,
   getTable,
-  menuLabel,
-  searchGuests,
+  searchParties,
   wedding,
 } from "@/lib/wedding";
 import { OrnamentFlourish } from "./WeddingHeader";
@@ -18,21 +17,21 @@ type Step = "welcome" | "search" | "result";
 export function SeatingFlow() {
   const [step, setStep] = useState<Step>("welcome");
   const [query, setQuery] = useState("");
-  const [guest, setGuest] = useState<Guest | null>(null);
+  const [party, setParty] = useState<Party | null>(null);
 
-  const suggestions = useMemo(() => searchGuests(query, 6), [query]);
+  const suggestions = useMemo(() => searchParties(query, 8), [query]);
   const showNoMatches =
     step === "search" && query.trim().length >= 2 && suggestions.length === 0;
 
-  function handleSelect(g: Guest) {
-    setGuest(g);
-    setQuery(g.name);
+  function handleSelect(p: Party) {
+    setParty(p);
+    setQuery(p.name);
     setStep("result");
   }
 
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
-    const exact = findExactGuest(query);
+    const exact = findExactParty(query);
     if (exact) {
       handleSelect(exact);
       return;
@@ -43,7 +42,7 @@ export function SeatingFlow() {
   }
 
   function reset() {
-    setGuest(null);
+    setParty(null);
     setQuery("");
     setStep("welcome");
   }
@@ -63,7 +62,7 @@ export function SeatingFlow() {
             onBack={() => setStep("welcome")}
           />
         )}
-        {step === "result" && guest && <Result guest={guest} onReset={reset} />}
+        {step === "result" && party && <Result party={party} onReset={reset} />}
       </div>
     </section>
   );
@@ -72,10 +71,12 @@ export function SeatingFlow() {
 function Welcome({ onStart }: { onStart: () => void }) {
   return (
     <div className="text-center py-10 sm:py-14 animate-fade-up">
-      <span className="hairline">Bienvenidos a nuestra boda</span>
-      <h1 className="font-serif text-5xl sm:text-7xl mt-6 leading-none">
+      <span className="hairline">Bienvenido a nuestra boda</span>
+      <h1 className="font-serif text-6xl sm:text-7xl mt-6 leading-none tracking-tight">
         {wedding.bride}
-        <span className="block text-accent italic text-3xl sm:text-4xl my-2">&</span>
+        <span className="block text-accent-dark italic text-3xl sm:text-4xl my-2">
+          &amp;
+        </span>
         {wedding.groom}
       </h1>
       <div className="divider-ornament mt-6">
@@ -84,8 +85,8 @@ function Welcome({ onStart }: { onStart: () => void }) {
       <p className="font-serif italic text-xl mt-4 text-foreground/80">
         {wedding.dateLabel}
       </p>
-      <p className="text-sm text-foreground/60 mt-1 tracking-widest uppercase">
-        {wedding.venue} · Recepción {wedding.reception}
+      <p className="text-sm text-foreground/60 mt-1 tracking-[0.25em] uppercase">
+        {wedding.venue} · Jiutepec, Morelos
       </p>
 
       <div className="card mt-10 p-8 sm:p-10 text-left">
@@ -93,9 +94,9 @@ function Welcome({ onStart }: { onStart: () => void }) {
           Gracias por acompañarnos.
         </p>
         <p className="mt-3 text-foreground/70 leading-relaxed">
-          Para esta noche hemos preparado una ubicación especial para cada uno
-          de nuestros invitados. Toca el botón y escribe tu nombre para encontrar
-          tu mesa, conocer el menú y ver el orden de la noche.
+          Hemos preparado una mesa especial para cada uno de nuestros invitados.
+          Escribe tu nombre o el de la persona bajo la que llegó tu invitación
+          y aparecerá al instante tu mesa, el menú y la distribución del salón.
         </p>
         <div className="mt-8 flex flex-col sm:flex-row gap-3 sm:items-center">
           <button className="btn-primary" onClick={onStart}>
@@ -108,6 +109,17 @@ function Welcome({ onStart }: { onStart: () => void }) {
             Orden de las mesas
           </Link>
         </div>
+      </div>
+
+      <div className="grid gap-3 sm:grid-cols-3 mt-6 text-left">
+        {wedding.schedule.map((item) => (
+          <div key={item.label} className="card px-5 py-4">
+            <p className="text-[0.65rem] uppercase tracking-[0.25em] text-primary">
+              {item.label}
+            </p>
+            <p className="font-serif text-2xl mt-1">{item.time} h</p>
+          </div>
+        ))}
       </div>
     </div>
   );
@@ -125,8 +137,8 @@ function Search({
   query: string;
   setQuery: (v: string) => void;
   onSubmit: (e: React.FormEvent) => void;
-  onSelect: (g: Guest) => void;
-  suggestions: Guest[];
+  onSelect: (p: Party) => void;
+  suggestions: Party[];
   showNoMatches: boolean;
   onBack: () => void;
 }) {
@@ -135,9 +147,10 @@ function Search({
       <div className="text-center">
         <span className="hairline">Encuentra tu mesa</span>
         <h2 className="font-serif text-4xl sm:text-5xl mt-5">¿Cuál es tu nombre?</h2>
-        <p className="text-foreground/70 mt-3">
-          Escribe tu nombre tal como aparece en tu invitación. No importan las
-          mayúsculas ni los acentos.
+        <p className="text-foreground/70 mt-3 max-w-md mx-auto">
+          Escríbelo tal como aparece en tu invitación. No importan los acentos
+          ni las mayúsculas. Si vienes acompañado, prueba también con el nombre
+          del titular de la invitación.
         </p>
       </div>
 
@@ -158,17 +171,25 @@ function Search({
 
           {suggestions.length > 0 && (
             <ul className="mt-4 divide-y divide-border/60 border border-border/60 rounded-xl overflow-hidden bg-white">
-              {suggestions.map((g) => {
-                const t = getTable(g.tableId);
+              {suggestions.map((p) => {
+                const t = getTable(p.mesa);
+                const total = p.personas + (p.ninos ?? 0);
                 return (
-                  <li key={g.name}>
+                  <li key={p.name}>
                     <button
                       type="button"
-                      onClick={() => onSelect(g)}
+                      onClick={() => onSelect(p)}
                       className="w-full text-left px-4 py-3 flex items-center justify-between gap-4 hover:bg-muted transition-colors"
                     >
-                      <span className="font-serif text-lg">{g.name}</span>
-                      <span className="chip">{t?.name ?? `Mesa ${g.tableId}`}</span>
+                      <span>
+                        <span className="font-serif text-lg block">
+                          {p.name}
+                        </span>
+                        <span className="text-xs text-foreground/60">
+                          {total === 1 ? "1 lugar" : `${total} lugares`}
+                        </span>
+                      </span>
+                      <span className="chip">{t?.label ?? `Mesa ${p.mesa}`}</span>
                     </button>
                   </li>
                 );
@@ -178,8 +199,9 @@ function Search({
 
           {showNoMatches && (
             <p className="mt-4 text-sm text-foreground/70 bg-muted/70 border border-border/70 rounded-lg p-3">
-              No encontramos ese nombre. Prueba con otra forma de escribirlo o
-              acércate a los anfitriones y con gusto te ayudaremos.
+              No encontramos ese nombre. Puede que tu invitación esté a nombre
+              de la persona con la que vienes; intenta buscar con ese nombre o
+              acércate a los anfitriones y con gusto te orientamos.
             </p>
           )}
 
@@ -191,7 +213,6 @@ function Search({
               type="submit"
               className="btn-primary"
               disabled={suggestions.length === 0}
-              style={{ opacity: suggestions.length === 0 ? 0.5 : 1 }}
             >
               Buscar mi mesa
             </button>
@@ -202,32 +223,47 @@ function Search({
   );
 }
 
-function Result({ guest, onReset }: { guest: Guest; onReset: () => void }) {
-  const table = getTable(guest.tableId);
-  const companions = getGuestsAtTable(guest.tableId).filter(
-    (g) => g.name !== guest.name,
+function Result({ party, onReset }: { party: Party; onReset: () => void }) {
+  const table = getTable(party.mesa);
+  const companions = getPartiesAtTable(party.mesa).filter(
+    (g) => g.name !== party.name,
   );
+  const total = party.personas + (party.ninos ?? 0);
 
   return (
     <div className="py-10 sm:py-14 animate-fade-up">
       <div className="text-center">
         <span className="hairline">Tu lugar esta noche</span>
         <p className="font-serif italic text-xl mt-5 text-foreground/70">
-          Hola,
+          Bienvenido,
         </p>
-        <h2 className="font-serif text-4xl sm:text-5xl mt-1">{guest.name}</h2>
+        <h2 className="font-serif text-4xl sm:text-5xl mt-1">{party.name}</h2>
+        <p className="text-sm text-foreground/60 mt-2">
+          {total === 1
+            ? "Tienes 1 lugar reservado"
+            : `Tienen ${total} lugares reservados`}
+          {party.ninos ? ` (incluye ${party.ninos} niño${party.ninos > 1 ? "s" : ""})` : ""}
+          .
+        </p>
 
         <div className="mt-8 inline-flex flex-col items-center">
           <div className="card px-10 py-8 sm:px-14 sm:py-10 text-center">
-            <p className="text-xs uppercase tracking-[0.3em] text-accent">
-              Te sentarás en
+            <p className="text-[0.65rem] uppercase tracking-[0.3em] text-accent-dark">
+              Te sentarás en la
             </p>
-            <p className="font-serif text-6xl sm:text-7xl mt-2 text-primary">
-              {table ? (table.id === 1 ? "Honor" : table.id) : guest.tableId}
+            <p className="font-serif text-7xl sm:text-8xl mt-2 text-primary leading-none">
+              {party.mesa}
             </p>
-            <p className="font-serif text-2xl mt-1">{table?.name}</p>
+            <p className="font-serif text-2xl mt-2">{table?.label}</p>
             {table?.description && (
-              <p className="text-foreground/60 mt-2 italic">{table.description}</p>
+              <p className="text-foreground/60 mt-1 italic">
+                {table.description}
+              </p>
+            )}
+            {table && (
+              <p className="chip chip-accent mt-4">
+                Zona {table.area} · {table.shape === "round" ? "mesa redonda" : "mesa rectangular"}
+              </p>
             )}
           </div>
         </div>
@@ -236,24 +272,14 @@ function Result({ guest, onReset }: { guest: Guest; onReset: () => void }) {
       <div className="grid gap-6 sm:grid-cols-2 mt-10">
         <div className="card p-6">
           <h3 className="font-serif text-2xl flex items-center gap-2">
-            Tu menú
+            El menú
             <OrnamentFlourish />
           </h3>
-          {guest.menu ? (
-            <>
-              <p className="chip mt-3">{guest.menu}</p>
-              <p className="font-serif text-xl mt-3">{menuLabel[guest.menu]}</p>
-              <p className="text-foreground/70 mt-2 text-sm">
-                Reservamos tu platillo principal con base en tu confirmación.
-                Si deseas cambiarlo, avísale a nuestro capitán de meseros.
-              </p>
-            </>
-          ) : (
-            <p className="mt-3 text-foreground/70">
-              Esta mesa comparte el servicio principal del menú. Consulta el
-              menú completo para los detalles.
-            </p>
-          )}
+          <p className="mt-3 text-foreground/70">
+            Esta noche disfrutaremos de un cóctel de bienvenida, entrada, sopa,
+            plato principal, postre y mesa de dulces. Todo acompañado de barra
+            libre durante la recepción.
+          </p>
           <Link href="/menu" className="btn-ghost mt-5 inline-flex">
             Ver menú completo →
           </Link>
@@ -261,20 +287,27 @@ function Result({ guest, onReset }: { guest: Guest; onReset: () => void }) {
 
         <div className="card p-6">
           <h3 className="font-serif text-2xl flex items-center gap-2">
-            Te acompañan
+            Compartirás mesa con
             <OrnamentFlourish />
           </h3>
           {companions.length > 0 ? (
-            <ul className="mt-3 space-y-2">
-              {companions.map((c) => (
-                <li
-                  key={c.name}
-                  className="flex items-center justify-between text-sm"
-                >
-                  <span className="font-serif text-lg">{c.name}</span>
-                  {c.menu && <span className="chip">{menuLabel[c.menu]}</span>}
-                </li>
-              ))}
+            <ul className="mt-3 space-y-2 max-h-72 overflow-y-auto pr-1">
+              {companions.map((c) => {
+                const t = c.personas + (c.ninos ?? 0);
+                return (
+                  <li
+                    key={c.name}
+                    className="flex items-center justify-between gap-3"
+                  >
+                    <span className="font-serif text-lg leading-tight">
+                      {c.name}
+                    </span>
+                    <span className="text-xs text-foreground/60 shrink-0">
+                      {t === 1 ? "1 lugar" : `${t} lugares`}
+                    </span>
+                  </li>
+                );
+              })}
             </ul>
           ) : (
             <p className="mt-3 text-foreground/70">
@@ -286,7 +319,7 @@ function Result({ guest, onReset }: { guest: Guest; onReset: () => void }) {
 
       <div className="mt-10 flex flex-col sm:flex-row gap-3 justify-center">
         <Link href="/mesas" className="btn-primary">
-          Ver el orden de las mesas
+          Ver el salón completo
         </Link>
         <button type="button" onClick={onReset} className="btn-ghost">
           Buscar otro nombre

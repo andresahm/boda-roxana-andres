@@ -1,14 +1,15 @@
 @import "tailwindcss";
 
 :root {
-  --background: #fbf7f2;
-  --foreground: #2a1f1a;
-  --primary: #8a3a3a;
-  --primary-soft: #b86b6b;
-  --accent: #c9a86a;
+  --background: #f6efeb;
+  --foreground: #393e46;
+  --primary: #758061;
+  --primary-soft: #b6b893;
+  --accent: #c7af80;
+  --accent-dark: #a58a52;
   --card: #ffffff;
-  --muted: #f0e8dc;
-  --border: #e5d9c4;
+  --muted: #f2f1e9;
+  --border: #e5dfd1;
 }
 
 @theme inline {
@@ -17,6 +18,7 @@
   --color-primary: var(--primary);
   --color-primary-soft: var(--primary-soft);
   --color-accent: var(--accent);
+  --color-accent-dark: var(--accent-dark);
   --color-card: var(--card);
   --color-muted: var(--muted);
   --color-border: var(--border);
@@ -34,8 +36,9 @@ body {
 body {
   font-family: var(--font-geist-sans), "Helvetica Neue", Arial, sans-serif;
   background-image:
-    radial-gradient(1200px 600px at 10% -10%, rgba(201, 168, 106, 0.18), transparent 60%),
-    radial-gradient(900px 500px at 110% 110%, rgba(138, 58, 58, 0.14), transparent 55%);
+    radial-gradient(1200px 600px at 10% -10%, rgba(199, 175, 128, 0.22), transparent 60%),
+    radial-gradient(900px 500px at 110% 110%, rgba(117, 128, 97, 0.18), transparent 55%),
+    radial-gradient(600px 400px at 50% 50%, rgba(182, 184, 147, 0.08), transparent 70%);
   background-attachment: fixed;
 }
 
@@ -76,12 +79,18 @@ body {
   font-weight: 600;
   letter-spacing: 0.05em;
   transition: transform 150ms ease, background 150ms ease, box-shadow 150ms ease;
-  box-shadow: 0 10px 24px -14px rgba(138, 58, 58, 0.7);
+  box-shadow: 0 10px 24px -14px rgba(117, 128, 97, 0.7);
 }
 
 .btn-primary:hover {
-  background: #732e2e;
+  background: #5f6a4f;
   transform: translateY(-1px);
+}
+
+.btn-primary:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+  transform: none;
 }
 
 .btn-ghost {
@@ -94,19 +103,20 @@ body {
   border: 1px solid var(--border);
   color: var(--foreground);
   background: transparent;
-  transition: background 150ms ease, border-color 150ms ease;
+  transition: background 150ms ease, border-color 150ms ease, color 150ms ease;
 }
 
 .btn-ghost:hover {
   background: var(--muted);
   border-color: var(--accent);
+  color: var(--primary);
 }
 
 .card {
   background: var(--card);
   border: 1px solid var(--border);
   border-radius: 1.25rem;
-  box-shadow: 0 20px 50px -30px rgba(42, 31, 26, 0.25);
+  box-shadow: 0 20px 50px -30px rgba(57, 62, 70, 0.25);
 }
 
 .chip {
@@ -117,10 +127,17 @@ body {
   border-radius: 999px;
   background: var(--muted);
   color: var(--primary);
-  font-size: 0.75rem;
+  font-size: 0.72rem;
   font-weight: 600;
   letter-spacing: 0.08em;
   text-transform: uppercase;
+  border: 1px solid var(--border);
+}
+
+.chip.chip-accent {
+  background: #efe4cf;
+  color: var(--accent-dark);
+  border-color: #e4d1a8;
 }
 
 input.field {
@@ -135,8 +152,8 @@ input.field {
 
 input.field:focus {
   outline: none;
-  border-color: var(--primary-soft);
-  box-shadow: 0 0 0 4px rgba(184, 107, 107, 0.18);
+  border-color: var(--primary);
+  box-shadow: 0 0 0 4px rgba(117, 128, 97, 0.18);
 }
 
 .divider-ornament {
@@ -144,7 +161,7 @@ input.field:focus {
   align-items: center;
   justify-content: center;
   gap: 0.75rem;
-  color: var(--accent);
+  color: var(--accent-dark);
 }
 
 .divider-ornament::before,
@@ -169,4 +186,33 @@ input.field:focus {
 
 .animate-fade-up {
   animation: fadeUp 500ms ease forwards;
+}
+
+/* salon layout */
+.salon-floor {
+  background:
+    linear-gradient(135deg, #f9f6ee, #f2ead9);
+  background-size: cover;
+}
+
+.table-dot {
+  background: #fff;
+  border: 1.5px solid var(--primary-soft);
+  color: var(--primary);
+  box-shadow: 0 6px 14px -8px rgba(57, 62, 70, 0.4);
+}
+
+.table-dot.rect {
+  border-radius: 0.75rem;
+}
+
+.table-dot.round {
+  border-radius: 999px;
+}
+
+.table-dot.sweetheart {
+  background: var(--primary);
+  color: #fff;
+  border-color: var(--primary);
+  border-radius: 1rem;
 }

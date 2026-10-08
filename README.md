@@ -1,13 +1,17 @@
-# Boda · Sofía & Mateo
+# Boda · Roxana & Andrés
 
-Una pequeña aplicación web para que los invitados a una boda puedan:
+Página web para los invitados a la boda de **Roxana y Andrés**
+(10 de octubre de 2026, Jardín Margaty, Jiutepec, Morelos).
 
-1. **Entrar por un QR** (`/qr` genera un código imprimible).
-2. **Escribir su nombre** y encontrar su mesa automáticamente.
-3. **Ver el menú** servido durante la noche (`/menu`).
-4. **Consultar el orden y la distribución de las mesas** en el salón (`/mesas`).
+## ¿Qué pueden hacer los invitados?
 
-Hecha con [Next.js 16](https://nextjs.org), TypeScript y Tailwind CSS 4.
+1. **Entrar escaneando un QR** (hay uno imprimible en `/qr`).
+2. **Buscar su mesa** escribiendo su nombre (o el nombre del titular de la
+   invitación). La búsqueda ignora acentos y mayúsculas.
+3. **Ver el menú** completo de la noche (`/menu`).
+4. **Consultar la distribución del salón** y la lista de invitados por mesa
+   (`/mesas`).
+5. **Revisar el itinerario y la dirección** del lugar (`/evento`).
 
 ## Scripts
 
@@ -18,31 +22,30 @@ npm run start   # Correr el build
 npm run lint    # Lint
 ```
 
-El dev server corre en el puerto **4123** por defecto.
+## ¿Cómo cambio los datos?
 
-## Personalizar la boda
-
-Toda la información (novios, mesas, invitados y menú) vive en un solo lugar:
+Toda la información vive en un solo archivo:
 
 - `src/lib/wedding.ts`
 
-Edita ese archivo para cambiar:
+Ahí puedes editar:
 
-- Nombres de los novios, fecha, lugar y hora (`wedding`).
-- Mesas: nombre, descripción y posición en el mapa (`tables`).
-- Lista de invitados y su asignación a mesa + preferencia de menú (`guests`).
-- Secciones y platillos del menú (`menu`).
-
-### Posiciones del mapa
-
-El mapa del salón en `/mesas` posiciona cada mesa con coordenadas `x` y `y`
-en porcentaje (0 a 100). Simplemente ajusta `position: { x, y }` en cada mesa
-para reorganizar el salón.
+- `wedding`: nombres de los novios, fecha, lugar, dirección, itinerario y
+  código de vestimenta.
+- `tables`: las 16 mesas con nombre, descripción, capacidad, forma
+  (`round` / `rect` / `sweetheart`) y posición `x` / `y` en el mapa (0 a 100).
+- `parties`: la lista de invitados (una entrada por invitación emitida con el
+  número total de personas y la mesa asignada).
+- `menu`: las secciones y platillos del menú.
 
 ### Búsqueda
 
-La búsqueda es tolerante a mayúsculas y acentos: `maria`, `María` y
-`maría fernanda` encontrarán a la misma invitada.
+La búsqueda es tolerante a mayúsculas y acentos: `heriberto`, `Hériberto` y
+`HERIBERTO` encuentran al mismo invitado. También acepta coincidencias
+parciales por palabra (ej. "garcia" encuentra a varios).
+
+Si una invitación es para una pareja y sólo está registrado el nombre de uno,
+el acompañante puede buscar escribiendo el nombre del titular.
 
 ## Rutas
 
@@ -50,11 +53,20 @@ La búsqueda es tolerante a mayúsculas y acentos: `maria`, `María` y
 | ---------- | --------------------------------------------------------------------- |
 | `/`        | Bienvenida + flujo para buscar mesa por nombre.                       |
 | `/menu`    | Menú completo de la noche.                                            |
-| `/mesas`   | Mapa del salón y listado de invitados por mesa.                       |
+| `/mesas`   | Mapa del salón + lista de invitados por mesa.                         |
+| `/evento`  | Itinerario, lugar y código de vestimenta.                             |
 | `/qr`      | Código QR imprimible que apunta a esta aplicación.                    |
+
+## Paleta y tipografía
+
+- Verde salvia (`#758061`), crema cálido (`#f6efeb`), dorado suave
+  (`#c7af80`) y gris oscuro (`#393e46`) — tomados de la invitación de
+  Sugarme.
+- Serif *Cormorant Garamond* para títulos y encabezados.
+- Sans *Geist* para cuerpo y controles.
 
 ## Despliegue
 
-Cualquier plataforma que soporte Next.js (Vercel, Netlify, Railway, Fly.io,
-etc.) funciona. Al desplegar, el QR en `/qr` apuntará automáticamente al host
-desde el que se sirve la página.
+Cualquier plataforma que soporte Next.js funciona (Vercel, Netlify, Fly.io,
+etc.). Al desplegar, el QR en `/qr` apuntará automáticamente al host desde
+el que se sirve la página.

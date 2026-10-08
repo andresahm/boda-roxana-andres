@@ -1,5 +1,9 @@
 import Link from "next/link";
-import { OrnamentFlourish, WeddingFooter, WeddingHeader } from "@/components/WeddingHeader";
+import {
+  OrnamentFlourish,
+  WeddingFooter,
+  WeddingHeader,
+} from "@/components/WeddingHeader";
 import { menu, wedding } from "@/lib/wedding";
 
 export default function MenuPage() {
@@ -10,12 +14,17 @@ export default function MenuPage() {
         <section className="mx-auto max-w-3xl px-6 py-10 sm:py-14">
           <div className="text-center">
             <span className="hairline">Experiencia gastronómica</span>
-            <h1 className="font-serif text-4xl sm:text-5xl mt-5">Menú de la noche</h1>
+            <h1 className="font-serif text-4xl sm:text-5xl mt-5">
+              Menú de la noche
+            </h1>
             <div className="divider-ornament mt-5">
               <OrnamentFlourish />
             </div>
             <p className="font-serif italic text-foreground/70 mt-4">
-              {wedding.bride} & {wedding.groom} · {wedding.dateLabel}
+              {wedding.bride} &amp; {wedding.groom} · {wedding.dateLabel}
+            </p>
+            <p className="text-xs tracking-[0.25em] uppercase text-foreground/60 mt-1">
+              {wedding.venue}
             </p>
           </div>
 
@@ -23,17 +32,12 @@ export default function MenuPage() {
             {menu.map((section, i) => (
               <div key={section.course} className={i > 0 ? "mt-10" : ""}>
                 <div className="text-center">
-                  <p className="chip">{section.course}</p>
+                  <p className="chip chip-accent">{section.course}</p>
                 </div>
                 <ul className="mt-5 space-y-5">
                   {section.dishes.map((dish) => (
                     <li key={dish.name} className="text-center">
-                      <p className="font-serif text-2xl flex items-center justify-center gap-3">
-                        {dish.name}
-                        {dish.tag && (
-                          <span className="chip text-[0.6rem]">{dish.tag}</span>
-                        )}
-                      </p>
+                      <p className="font-serif text-2xl">{dish.name}</p>
                       {dish.description && (
                         <p className="text-foreground/70 italic mt-1 max-w-xl mx-auto">
                           {dish.description}
@@ -50,6 +54,11 @@ export default function MenuPage() {
               </div>
             ))}
           </div>
+
+          <p className="text-xs text-foreground/50 text-center mt-6 italic">
+            Si tienes alguna alergia o restricción alimentaria, avísale a
+            cualquier capitán de meseros al llegar a tu mesa.
+          </p>
 
           <div className="text-center mt-10 flex flex-col sm:flex-row gap-3 justify-center">
             <Link href="/" className="btn-primary">

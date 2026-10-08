@@ -1,8 +1,19 @@
 import Link from "next/link";
-import { OrnamentFlourish, WeddingFooter, WeddingHeader } from "@/components/WeddingHeader";
-import { getGuestsAtTable, menuLabel, tables } from "@/lib/wedding";
+import {
+  OrnamentFlourish,
+  WeddingFooter,
+  WeddingHeader,
+} from "@/components/WeddingHeader";
+import {
+  getPartiesAtTable,
+  tableTotals,
+  tables,
+  totalGuests,
+} from "@/lib/wedding";
 
 export default function MesasPage() {
+  const guestCount = totalGuests();
+
   return (
     <>
       <WeddingHeader />
@@ -10,48 +21,59 @@ export default function MesasPage() {
         <section className="mx-auto max-w-5xl px-6 py-10 sm:py-14">
           <div className="text-center">
             <span className="hairline">Distribución del salón</span>
-            <h1 className="font-serif text-4xl sm:text-5xl mt-5">Orden de las mesas</h1>
+            <h1 className="font-serif text-4xl sm:text-5xl mt-5">
+              Orden de las mesas
+            </h1>
             <div className="divider-ornament mt-5">
               <OrnamentFlourish />
             </div>
             <p className="text-foreground/70 mt-4 max-w-xl mx-auto">
-              Un mapa pensado para que puedas encontrar fácilmente a tus familiares
-              y amigos. La mesa de honor se encuentra al frente del salón.
+              16 mesas distribuidas alrededor de la pista de baile, con la mesa
+              de los novios al centro. Son {guestCount} invitados en total.
             </p>
           </div>
 
           <SalonMap />
 
           <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3 mt-12">
-            {tables.map((t) => {
-              const guestsAtTable = getGuestsAtTable(t.id);
-              return (
-                <article key={t.id} className="card p-6">
-                  <div className="flex items-center justify-between">
-                    <h2 className="font-serif text-2xl">{t.name}</h2>
-                    <span className="chip">#{t.id}</span>
-                  </div>
-                  <p className="text-foreground/70 italic mt-1">{t.description}</p>
-                  <ul className="mt-4 space-y-2">
-                    {guestsAtTable.map((g) => (
-                      <li
-                        key={g.name}
-                        className="flex items-start justify-between gap-3 text-sm"
-                      >
-                        <span className="font-serif text-lg leading-tight">
-                          {g.name}
-                        </span>
-                        {g.menu && (
-                          <span className="chip whitespace-nowrap text-[0.6rem]">
-                            {menuLabel[g.menu]}
-                          </span>
-                        )}
-                      </li>
-                    ))}
-                  </ul>
-                </article>
-              );
-            })}
+            {[...tables]
+              .filter((t) => t.id !== 0)
+              .sort((a, b) => a.id - b.id)
+              .map((t) => {
+                const partiesAtTable = getPartiesAtTable(t.id);
+                const totals = tableTotals(t.id);
+                return (
+                  <article key={t.id} className="card p-6">
+                    <div className="flex items-center justify-between">
+                      <h2 className="font-serif text-2xl">{t.label}</h2>
+                      <span className="chip">
+                        {totals.personas} / {t.capacity}
+                      </span>
+                    </div>
+                    <p className="text-foreground/70 italic mt-1">
+                      {t.description}
+                    </p>
+                    <ul className="mt-4 space-y-2">
+                      {partiesAtTable.map((p) => {
+                        const t2 = p.personas + (p.ninos ?? 0);
+                        return (
+                          <li
+                            key={p.name}
+                            className="flex items-start justify-between gap-3 text-sm"
+                          >
+                            <span className="font-serif text-lg leading-tight">
+                              {p.name}
+                            </span>
+                            <span className="text-xs text-foreground/60 shrink-0 pt-1.5">
+                              {t2 === 1 ? "1" : t2}
+                            </span>
+                          </li>
+                        );
+                      })}
+                    </ul>
+                  </article>
+                );
+              })}
           </div>
 
           <div className="text-center mt-12">
@@ -68,55 +90,69 @@ export default function MesasPage() {
 
 function SalonMap() {
   return (
-    <div className="card mt-10 p-6 sm:p-8">
-      <div className="flex items-center justify-between text-xs uppercase tracking-widest text-foreground/60">
-        <span>Entrada</span>
-        <span>Pista de baile</span>
-      </div>
-      <div className="relative mt-4 w-full aspect-[4/3] rounded-xl bg-muted/70 border border-border overflow-hidden">
-        <div className="absolute inset-0 opacity-20"
-             style={{
-               backgroundImage:
-                 "linear-gradient(0deg, transparent 24%, rgba(0,0,0,0.08) 25%, rgba(0,0,0,0.08) 26%, transparent 27%, transparent 74%, rgba(0,0,0,0.08) 75%, rgba(0,0,0,0.08) 76%, transparent 77%), linear-gradient(90deg, transparent 24%, rgba(0,0,0,0.08) 25%, rgba(0,0,0,0.08) 26%, transparent 27%, transparent 74%, rgba(0,0,0,0.08) 75%, rgba(0,0,0,0.08) 76%, transparent 77%)",
-               backgroundSize: "48px 48px",
-             }}
-        />
+    <div className="card mt-10 p-5 sm:p-8">
+      <div className="relative mt-2 w-full aspect-[16/9] rounded-xl salon-floor border border-border overflow-hidden">
         <div
-          className="absolute left-1/2 -translate-x-1/2 top-[52%] -translate-y-1/2 w-32 h-20 sm:w-40 sm:h-24 rounded-full border-2 border-dashed border-accent/70 flex items-center justify-center text-xs uppercase tracking-widest text-accent"
+          className="absolute top-[6%] left-1/2 -translate-x-1/2 px-6 py-2 rounded-lg bg-foreground/85 text-background text-xs tracking-widest uppercase"
           aria-hidden
         >
-          Pista
+          DJ
         </div>
 
-        {tables.map((t) => (
-          <div
-            key={t.id}
-            className="absolute -translate-x-1/2 -translate-y-1/2 flex flex-col items-center"
-            style={{ left: `${t.position.x}%`, top: `${t.position.y}%` }}
-          >
+        <div
+          className="absolute left-1/2 -translate-x-1/2 top-[42%] -translate-y-1/2 w-[26%] h-[32%] rounded-full border-2 border-dashed border-accent-dark/60 flex items-center justify-center text-[0.65rem] uppercase tracking-[0.3em] text-accent-dark"
+          aria-hidden
+        >
+          Pista de baile
+        </div>
+
+        {tables.map((t) => {
+          const totals = tableTotals(t.id);
+          const label =
+            t.shape === "sweetheart"
+              ? "R & A"
+              : t.id;
+          return (
             <div
-              className={
-                "shadow-md flex items-center justify-center font-serif " +
-                (t.shape === "head"
-                  ? "bg-primary text-white rounded-2xl w-28 h-10 text-sm"
-                  : "bg-white border border-border rounded-full w-14 h-14 text-primary text-xl")
-              }
-              title={`${t.name} · ${t.description}`}
+              key={t.id}
+              className="absolute -translate-x-1/2 -translate-y-1/2 flex flex-col items-center"
+              style={{ left: `${t.position.x}%`, top: `${t.position.y}%` }}
             >
-              {t.shape === "head" ? "Mesa de honor" : t.id}
+              <div
+                className={`table-dot ${t.shape} flex items-center justify-center font-serif text-center shadow-md ${
+                  t.shape === "sweetheart"
+                    ? "px-3 py-2 text-xs"
+                    : t.shape === "round"
+                      ? "w-14 h-14 text-xl"
+                      : "w-20 h-10 text-base"
+                }`}
+                title={`${t.label} · ${t.description}`}
+              >
+                {label}
+              </div>
+              {t.shape !== "sweetheart" && (
+                <span className="mt-1 text-[0.6rem] uppercase tracking-wider text-foreground/70 text-center max-w-[6rem] leading-tight">
+                  {totals.personas}/{t.capacity}
+                </span>
+              )}
             </div>
-            {t.shape !== "head" && (
-              <span className="mt-1 text-[0.65rem] uppercase tracking-wider text-foreground/70 text-center max-w-[6rem] leading-tight">
-                {t.description}
-              </span>
-            )}
-          </div>
-        ))}
+          );
+        })}
       </div>
-      <p className="mt-4 text-xs text-foreground/60 text-center">
-        Las posiciones son referenciales; el personal del salón te guiará a tu
-        lugar a la llegada.
-      </p>
+      <div className="mt-4 flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-[0.65rem] uppercase tracking-widest text-foreground/60">
+        <span className="flex items-center gap-2">
+          <span className="inline-block w-4 h-4 rounded-full table-dot" />
+          Mesa redonda
+        </span>
+        <span className="flex items-center gap-2">
+          <span className="inline-block w-6 h-3 rounded-md table-dot rect" />
+          Mesa rectangular
+        </span>
+        <span className="flex items-center gap-2">
+          <span className="inline-block w-6 h-3 rounded-md table-dot sweetheart" />
+          Mesa de novios
+        </span>
+      </div>
     </div>
   );
 }
