@@ -34,14 +34,27 @@ export default function EventoPage() {
               {wedding.venue}
             </p>
             <p className="text-foreground/70 mt-2">{wedding.address}</p>
-            <a
-              href={wedding.mapsUrl}
-              target="_blank"
-              rel="noreferrer"
-              className="btn-primary mt-5 inline-flex"
-            >
-              Abrir en Google Maps →
-            </a>
+            <div className="mt-5 flex flex-col sm:flex-row flex-wrap gap-3">
+              <a
+                href={wedding.mapsUrl}
+                target="_blank"
+                rel="noreferrer"
+                className="btn-primary"
+              >
+                Abrir en Google Maps →
+              </a>
+              <a
+                href={wedding.wazeUrl}
+                target="_blank"
+                rel="noreferrer"
+                className="btn-ghost"
+              >
+                Abrir en Waze →
+              </a>
+            </div>
+            <p className="text-xs text-foreground/50 mt-3 italic">
+              Elige el que prefieras según la app que ya tengas instalada.
+            </p>
           </div>
 
           <div className="card mt-6 p-8">

@@ -32,6 +32,8 @@ export const wedding = {
   address: "Jiutepec 87, Las Rosas Esq., 62560 Jiutepec, Morelos",
   mapsUrl:
     "https://www.google.com/maps/search/?api=1&query=Jardin+Margaty+Jiutepec+87+Las+Rosas+62560+Jiutepec+Morelos",
+  wazeUrl:
+    "https://www.waze.com/ul?q=Jardin%20Margaty%20Jiutepec%2087%20Las%20Rosas%2062560%20Jiutepec%20Morelos&navigate=yes",
   schedule: [
     { time: "16:00", label: "Ceremonia" },
     { time: "17:00", label: "Cóctel" },
