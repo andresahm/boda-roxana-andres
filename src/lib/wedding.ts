@@ -54,9 +54,28 @@ export const wedding = {
   invitationUrl: "https://sugarme.mx/RoxanayAndres_10oct26/",
   photos: {
     hashtag: "#RoxAndy101026",
-    instagram: "",
-    googlePhotosUrl: "",
-    whatsapp: "",
+    instagrams: [
+      { label: "Roxana", handle: "roxesquivel" },
+      { label: "Andrés", handle: "andresahm" },
+    ],
+    albums: [
+      {
+        name: "Google Photos",
+        description:
+          "Sube fotos y videos sin importar el tamaño. Puedes verlas sin necesidad de cuenta.",
+        url: "https://photos.app.goo.gl/zNUQFJ11MwuKvHCs8",
+      },
+      {
+        name: "OneDrive",
+        description:
+          "Prefieres OneDrive, también funciona. Mismo álbum, otro camino.",
+        url: "https://1drv.ms/a/c/7961ad1200f762b1/IgCLOMaG3E4iS7NmQ6rEJGokAY7VPrI8JNzgn3ATXBcrjsU",
+      },
+    ],
+    whatsapps: [
+      { name: "Roxana", phone: "525536747394" },
+      { name: "Andrés", phone: "525534987610" },
+    ],
   },
 };
 

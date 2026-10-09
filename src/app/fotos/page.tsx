@@ -8,7 +8,7 @@ import { HashtagCopy } from "@/components/HashtagCopy";
 import { wedding } from "@/lib/wedding";
 
 export default function FotosPage() {
-  const { hashtag, instagram, googlePhotosUrl, whatsapp } = wedding.photos;
+  const { hashtag, instagrams, albums, whatsapps } = wedding.photos;
 
   return (
     <>
@@ -25,97 +25,123 @@ export default function FotosPage() {
             </div>
             <p className="text-foreground/70 mt-4 max-w-xl mx-auto">
               Queremos revivir cada instante de esta noche a través de tus
-              ojos. Captura todo lo que quieras y súbelo a cualquiera de
-              estos lugares para que lo veamos.
+              ojos. Elige el lugar que más te acomode para compartir tus
+              fotos y videos con nosotros.
             </p>
           </div>
 
+          {/* Hashtag */}
           <div className="card mt-10 p-8 sm:p-12 text-center">
             <p className="chip chip-accent">Nuestro hashtag</p>
             <div className="mt-6">
               <HashtagCopy hashtag={hashtag} />
             </div>
             <p className="text-foreground/70 mt-6 max-w-md mx-auto">
-              Si subes tus fotos y videos a Instagram, Facebook o TikTok,
-              etiqueta cada publicación con nuestro hashtag. Así juntamos
-              todas las memorias en un solo lugar.
+              Si publicas tus fotos o historias en Instagram, Facebook o
+              TikTok, etiquétalas con nuestro hashtag. Así juntamos todo en
+              un solo lugar.
             </p>
-            {instagram && (
-              <a
-                href={`https://instagram.com/${instagram.replace("@", "")}`}
-                target="_blank"
-                rel="noreferrer"
-                className="btn-ghost mt-6 inline-flex"
-              >
-                Síguenos en Instagram @{instagram.replace("@", "")}
-              </a>
+            {instagrams.length > 0 && (
+              <div className="mt-6 flex flex-wrap items-center justify-center gap-2">
+                <span className="text-xs tracking-widest uppercase text-foreground/60 w-full sm:w-auto">
+                  Etiquétanos:
+                </span>
+                {instagrams.map((ig) => (
+                  <a
+                    key={ig.handle}
+                    href={`https://instagram.com/${ig.handle}`}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="btn-ghost text-sm"
+                  >
+                    {ig.label} · @{ig.handle}
+                  </a>
+                ))}
+              </div>
             )}
           </div>
 
-          {googlePhotosUrl ? (
-            <div className="card mt-6 p-8 text-center">
-              <p className="chip">Álbum compartido</p>
-              <h2 className="font-serif text-3xl mt-4">
-                Álbum de Google Photos
-              </h2>
-              <p className="text-foreground/70 mt-3 max-w-md mx-auto">
-                El lugar perfecto para subir fotos sin importar el tamaño.
-                No necesitas cuenta de Google para ver, y puedes subir
-                desde cualquier celular.
-              </p>
-              <a
-                href={googlePhotosUrl}
-                target="_blank"
-                rel="noreferrer"
-                className="btn-primary mt-6 inline-flex"
-              >
-                Abrir el álbum →
-              </a>
-            </div>
-          ) : (
-            <div className="card mt-6 p-8 text-center border-dashed">
-              <p className="chip">Próximamente</p>
-              <h2 className="font-serif text-3xl mt-4">
-                Álbum compartido de Google Photos
-              </h2>
-              <p className="text-foreground/70 mt-3 max-w-md mx-auto">
-                Vamos a abrir un álbum compartido donde cualquiera podrá
-                subir sus fotos y videos sin límite de tamaño ni calidad.
-                El link aparecerá aquí muy pronto.
-              </p>
-            </div>
+          {/* Álbumes */}
+          <div className="mt-6 text-center">
+            <p className="chip">Álbumes compartidos</p>
+            <h2 className="font-serif text-3xl mt-3">
+              Sube todas las fotos que quieras
+            </h2>
+            <p className="text-foreground/70 mt-3 max-w-xl mx-auto">
+              Elige el que ya uses. Las fotos quedan guardadas para siempre
+              y en calidad original, sin importar cuántas subas.
+            </p>
+          </div>
+          <div className="grid gap-5 sm:grid-cols-2 mt-6">
+            {albums.map((album) => (
+              <article key={album.name} className="card p-6 text-center">
+                <h3 className="font-serif text-2xl">{album.name}</h3>
+                <p className="text-foreground/70 mt-3 text-sm leading-relaxed">
+                  {album.description}
+                </p>
+                <a
+                  href={album.url}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="btn-primary mt-5 inline-flex"
+                >
+                  Abrir álbum →
+                </a>
+              </article>
+            ))}
+          </div>
+
+          {/* WhatsApp */}
+          {whatsapps.length > 0 && (
+            <>
+              <div className="mt-10 text-center">
+                <p className="chip">Envío directo</p>
+                <h2 className="font-serif text-3xl mt-3">
+                  Mándanos por WhatsApp
+                </h2>
+                <p className="text-foreground/70 mt-3 max-w-xl mx-auto">
+                  ¿Te acomoda mejor WhatsApp? Mándanos tus fotos y videos
+                  directo a cualquiera de los dos — nos llegan al instante.
+                </p>
+              </div>
+              <div className="grid gap-5 sm:grid-cols-2 mt-6">
+                {whatsapps.map((wa) => {
+                  const digits = wa.phone.replace(/\D/g, "");
+                  const text = encodeURIComponent(
+                    `¡Hola ${wa.name}! Les mando mis fotos de la boda ${hashtag}`,
+                  );
+                  return (
+                    <article key={wa.phone} className="card p-6 text-center">
+                      <h3 className="font-serif text-2xl">{wa.name}</h3>
+                      <p className="text-foreground/60 mt-2 text-sm">
+                        +{digits.slice(0, 2)} {digits.slice(2, 4)} {digits.slice(4, 8)} {digits.slice(8)}
+                      </p>
+                      <a
+                        href={`https://wa.me/${digits}?text=${text}`}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="btn-primary mt-4 inline-flex"
+                      >
+                        Abrir WhatsApp →
+                      </a>
+                    </article>
+                  );
+                })}
+              </div>
+            </>
           )}
 
-          {whatsapp && (
-            <div className="card mt-6 p-8 text-center">
-              <p className="chip">Rapidito</p>
-              <h2 className="font-serif text-3xl mt-4">Envíanos por WhatsApp</h2>
-              <p className="text-foreground/70 mt-3 max-w-md mx-auto">
-                Si prefieres mandarlas directo, aquí nos llegan al instante.
-              </p>
-              <a
-                href={`https://wa.me/${whatsapp.replace(/\D/g, "")}?text=${encodeURIComponent(
-                  "¡Hola! Les mando mis fotos de la boda " + hashtag,
-                )}`}
-                target="_blank"
-                rel="noreferrer"
-                className="btn-primary mt-6 inline-flex"
-              >
-                Abrir WhatsApp →
-              </a>
-            </div>
-          )}
-
+          {/* Consejo */}
           <div className="card mt-10 p-6 sm:p-8">
             <h3 className="font-serif text-xl flex items-center gap-3">
               Un consejo cariñoso
               <OrnamentFlourish />
             </h3>
             <p className="mt-3 text-foreground/70 leading-relaxed">
-              Durante la ceremonia te pedimos guardar el celular un ratito,
-              para que todos podamos vivir el momento con el corazón. Después
-              del cóctel, ¡tira todas las fotos que quieras! Son nuestro
-              regalo favorito.
+              Durante la ceremonia te pedimos guardar el celular un ratito
+              para que todos podamos vivir el momento con el corazón.
+              Después del cóctel, ¡tira todas las fotos que quieras! Son
+              nuestro regalo favorito.
             </p>
           </div>
 
