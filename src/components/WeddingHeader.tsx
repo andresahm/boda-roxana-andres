@@ -28,6 +28,9 @@ export function WeddingHeader({ compact = false }: { compact?: boolean }) {
             <Link href="/evento" className="btn-ghost">
               Evento
             </Link>
+            <Link href="/fotos" className="btn-ghost">
+              Fotos
+            </Link>
           </nav>
         )}
       </div>

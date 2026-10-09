@@ -98,7 +98,7 @@ function Welcome({ onStart }: { onStart: () => void }) {
           Escribe tu nombre o el de la persona bajo la que llegó tu invitación
           y aparecerá al instante tu mesa, el menú y la distribución del salón.
         </p>
-        <div className="mt-8 flex flex-col sm:flex-row gap-3 sm:items-center">
+        <div className="mt-8 flex flex-col sm:flex-row flex-wrap gap-3 sm:items-center">
           <button className="btn-primary" onClick={onStart}>
             Encontrar mi mesa
           </button>
@@ -107,6 +107,9 @@ function Welcome({ onStart }: { onStart: () => void }) {
           </Link>
           <Link href="/mesas" className="btn-ghost">
             Orden de las mesas
+          </Link>
+          <Link href="/fotos" className="btn-ghost">
+            Sube tus fotos
           </Link>
         </div>
       </div>
@@ -317,9 +320,12 @@ function Result({ party, onReset }: { party: Party; onReset: () => void }) {
         </div>
       </div>
 
-      <div className="mt-10 flex flex-col sm:flex-row gap-3 justify-center">
+      <div className="mt-10 flex flex-col sm:flex-row flex-wrap gap-3 justify-center">
         <Link href="/mesas" className="btn-primary">
           Ver el salón completo
+        </Link>
+        <Link href="/fotos" className="btn-ghost">
+          Sube tus fotos 📸
         </Link>
         <button type="button" onClick={onReset} className="btn-ghost">
           Buscar otro nombre

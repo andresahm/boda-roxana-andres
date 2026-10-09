@@ -52,6 +52,12 @@ export const wedding = {
   ],
   dressCode: "Formal",
   invitationUrl: "https://sugarme.mx/RoxanayAndres_10oct26/",
+  photos: {
+    hashtag: "#RoxAndy101026",
+    instagram: "",
+    googlePhotosUrl: "",
+    whatsapp: "",
+  },
 };
 
 export const tables: Table[] = [
