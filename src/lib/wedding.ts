@@ -128,6 +128,7 @@ export const parties: Party[] = [
   { name: "Rodrigo Ricalde Torija", personas: 1, mesa: 7, lado: "novio" },
   { name: "Rogelio Ignacio Carrillo Hernandez", personas: 2, mesa: 7, lado: "novio" },
 
+  { name: "Karen Contreras Barbosa", personas: 2, mesa: 8, lado: "novio" },
   { name: "Michelle Hernández", personas: 2, mesa: 8, lado: "novio" },
   { name: "Michelle Urrutia", personas: 1, mesa: 8, lado: "novio" },
   { name: "Noemi Betancourt", personas: 1, mesa: 8, lado: "novio" },
