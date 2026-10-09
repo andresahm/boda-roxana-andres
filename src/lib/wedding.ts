@@ -77,6 +77,17 @@ export const wedding = {
       { name: "Andrés", phone: "525534987610" },
     ],
   },
+  gifts: {
+    liverpool: {
+      number: "51813273",
+      url: "https://mesaderegalos.liverpool.com.mx/milistaderegalos/51813273",
+    },
+    transfer: {
+      clabe: "722969010624127671",
+      beneficiary: "Andrés Alberto Hernández Mayo",
+      institution: "Mercado Pago W",
+    },
+  },
 };
 
 export const tables: Table[] = [

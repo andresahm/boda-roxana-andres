@@ -18,7 +18,7 @@ export function WeddingHeader({ compact = false }: { compact?: boolean }) {
           </div>
         </Link>
         {!compact && (
-          <nav className="flex items-center gap-2 text-sm">
+          <nav className="flex items-center flex-wrap gap-2 text-sm">
             <Link href="/mesas" className="btn-ghost">
               Mesas
             </Link>
@@ -30,6 +30,9 @@ export function WeddingHeader({ compact = false }: { compact?: boolean }) {
             </Link>
             <Link href="/fotos" className="btn-ghost">
               Fotos
+            </Link>
+            <Link href="/regalos" className="btn-ghost">
+              Regalos
             </Link>
           </nav>
         )}

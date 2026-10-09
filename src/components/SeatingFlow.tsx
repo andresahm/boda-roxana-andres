@@ -111,6 +111,9 @@ function Welcome({ onStart }: { onStart: () => void }) {
           <Link href="/fotos" className="btn-ghost">
             Sube tus fotos
           </Link>
+          <Link href="/regalos" className="btn-ghost">
+            Mesa de regalos
+          </Link>
         </div>
       </div>
 
