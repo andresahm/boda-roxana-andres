@@ -39,6 +39,16 @@ export default function MenuPage() {
                     </p>
                   )}
                 </div>
+                {section.image && (
+                  <figure className="mt-6">
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img
+                      src={section.image.src}
+                      alt={section.image.alt}
+                      className="w-full rounded-xl border border-border shadow-sm"
+                    />
+                  </figure>
+                )}
                 <ul className="mt-5 space-y-5">
                   {section.dishes.map((dish) => (
                     <li key={dish.name} className="text-center">

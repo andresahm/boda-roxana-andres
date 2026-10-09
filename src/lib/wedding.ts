@@ -189,6 +189,7 @@ export const parties: Party[] = [
 export type MenuSection = {
   course: string;
   subtitle?: string;
+  image?: { src: string; alt: string };
   dishes: { name: string; description?: string }[];
 };
 
@@ -196,16 +197,11 @@ export const menu: MenuSection[] = [
   {
     course: "Cóctel de bienvenida",
     subtitle: "17:00 h · Barra abierta",
+    image: {
+      src: "/coctel/menu-1.jpg",
+      alt: "Carta de cocktail de Grupo Paraíso: mojitos, Aperol, aguas frescas, clamatos, micheladas, cerveza, gin, nieves artesanales y caballitos de mezcal.",
+    },
     dishes: [
-      {
-        name: "Barra de bebidas",
-        description:
-          "Mojitos, clamatos, mezcal, gin, Aperol y nieve artesanal.",
-      },
-      {
-        name: "Aguas frescas",
-        description: "Jamaica, horchata y limón.",
-      },
       {
         name: "Entremeses",
         description:
